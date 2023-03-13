@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Todos from './components/Todos';
+import CreateTodo from './components/CreateTodo';
+
+// const obj ={todo:'gym', isCompleted:false}
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (todoObj) => {
+    setTodos((preState) => [...preState, todoObj])
+    console.log(todoObj, 'obj')
+  }
+  const updateTodo = (value, index) => {
+    setTodos((preState) => {
+    const updatedTodos =  preState.map((item, ind) => {
+
+        if (ind === index) {
+          return {
+            ...item, isCompleted: value
+          }
+
+        }
+        return item;
+      })
+      return updatedTodos;
+    })
+    
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CreateTodo addTodo={addTodo} />
+      <Todos todos={todos} updateTodo={updateTodo} />
     </div>
   );
 }
